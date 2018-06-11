@@ -12,28 +12,31 @@ import {
   //Authorized
   // HttpError
 } from "routing-controllers";
-import Student from "./entity";
+import Students from "./entity";
+import Batch from "../batches/entity";
 
 @JsonController()
 export default class StudentController {
   //@Authorized()
   @Get("/students/:id")
   getStudent(@Param("id") id: number) {
-    return Student.findOne(id);
+    return Students.findOne(id);
   }
 
   //@Authorized()
   @Get("/students")
   async allStudents() {
-    const students = await Student.find();
+    const students = await Students.find();
     return { students };
   }
 
   //@Authorized()
   @Post("/students")
   @HttpCode(201)
-  createStudent(@Body() student: Student) {
-    return student.save();
+  async createStudent(@Body() students: Students) {
+    const batch = (await Batch.findOne(students.batch))!;
+    students.batch = batch;
+    return students.save();
   }
 
   //   @Delete("/students/:id")

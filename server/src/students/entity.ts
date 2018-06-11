@@ -11,7 +11,7 @@ import Batch from "../batches/entity";
 import Evaluation from "../evaluations/entity";
 
 @Entity()
-export default class Student extends BaseEntity {
+export default class Students extends BaseEntity {
   @PrimaryGeneratedColumn() id?: number;
 
   @IsString()
@@ -27,9 +27,9 @@ export default class Student extends BaseEntity {
   @Column("text", { nullable: true })
   image: string;
 
-  @ManyToOne(_ => Batch, batch => batch.students)
+  @ManyToOne(_ => Batch, batch => batch.students, { cascade: true })
   batch: Batch;
 
-  @OneToMany(_ => Evaluation, evaluation => evaluation.student)
+  @OneToMany(_ => Evaluation, evaluation => evaluation.student, { eager: true })
   evaluations: Evaluation[];
 }
