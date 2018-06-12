@@ -2,7 +2,7 @@ import * as request from "superagent";
 
 const baseUrl = "http://localhost:4000";
 
-export const GET_DET_STUDENT = "GET_DET_STUDENT";
+export const GET_STUDENT = "GET_STUDENT";
 export const GET_ALL_STUDENTS = "GET_ALL_STUDENTS";
 export const ADD_STUDENT = "ADD_STUDENT";
 export const UPDATE_STUDENT = "UPDATE_STUDENT";
@@ -13,7 +13,7 @@ export const getStudent = studentId => dispatch => {
     .get(`${baseUrl}/students/${studentId}`)
     .then(response =>
       dispatch({
-        type: GET_DET_STUDENT,
+        type: GET_STUDENT,
         payload: response.body
       })
     )
@@ -43,4 +43,16 @@ export const deleteStudent = studentId => (dispatch, getState) => {
       payload: studentId
     })
   );
+};
+
+export const updateStudent = (studentId, updates) => dispatch => {
+  request
+    .put(`${baseUrl}/students/${studentId}`)
+    .send(updates)
+    .then(response =>
+      dispatch({
+        type: UPDATE_STUDENT,
+        payload: response.body
+      })
+    );
 };

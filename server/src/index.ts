@@ -5,6 +5,7 @@ import StudentController from "./students/controller";
 import UserController from "./users/controller";
 import LoginController from "./logins/controller";
 import BatchController from "./batches/controller";
+import EvaluationController from "./evaluations/controller";
 import setupDb from "./db";
 import { verify } from "./jwt";
 import User from "./users/entity";
@@ -15,7 +16,8 @@ const app = createKoaServer({
     UserController,
     StudentController,
     LoginController,
-    BatchController
+    BatchController,
+    EvaluationController
   ],
 
   authorizationChecker: (action: Action) => {

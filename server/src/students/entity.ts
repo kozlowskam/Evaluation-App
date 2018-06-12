@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { MinLength, IsString } from "class-validator";
 import Batch from "../batches/entity";
-import Evaluation from "../evaluations/entity";
+import Evaluations from "../evaluations/entity";
 
 @Entity()
 export default class Students extends BaseEntity {
@@ -30,8 +30,8 @@ export default class Students extends BaseEntity {
   @ManyToOne(_ => Batch, batch => batch.students, { eager: false })
   batch: Batch;
 
-  @OneToMany(_ => Evaluation, evaluation => evaluation.student, {
+  @OneToMany(_ => Evaluations, evaluation => evaluation.students, {
     eager: true
   })
-  evaluations: Evaluation[];
+  evaluations: Evaluations[];
 }

@@ -9,31 +9,31 @@ import {
   Param
   // HttpError
 } from "routing-controllers";
-import Evaluation from "./entity";
+import Evaluations from "./entity";
 //import * as request from "superagent";
-import Student from "../students/entity";
+import Students from "../students/entity";
 
 @JsonController()
 export default class EvaluationController {
   //@Authorized()
   @Get("/evaluations/:id")
   getEvaluation(@Param("id") id: number) {
-    return Evaluation.findOne(id);
+    return Evaluations.findOne(id);
   }
 
   //@Authorized()
   @Get("/evaluations")
   async allEvaluations() {
-    const evaluations = await Evaluation.find();
+    const evaluations = await Evaluations.find();
     return { evaluations };
   }
 
   //@Authorized()
   @Post("/evaluations")
   @HttpCode(201)
-  async createEvaluation(@Body() evaluation: Evaluation) {
-    const student = (await Student.findOne(evaluation.student))!;
-    evaluation.student = student;
-    return evaluation.save();
+  async createEvaluation(@Body() evaluations: Evaluations) {
+    const student = (await Students.findOne(evaluations.students))!;
+    evaluations.students = student;
+    return evaluations.save();
   }
 }

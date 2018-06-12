@@ -1,7 +1,7 @@
 import { ADD_STUDENT } from "../actions/students";
 import { DELETE_STUDENT } from "../actions/students";
 import { UPDATE_STUDENT } from "../actions/students";
-import { GET_DET_STUDENT } from "../actions/students";
+import { GET_STUDENT } from "../actions/students";
 
 const student = [];
 
@@ -18,7 +18,7 @@ export default function(state = student, action) {
         return action.payload;
       } else return state;
 
-    case GET_DET_STUDENT:
+    case GET_STUDENT:
       return action.payload;
 
     default:

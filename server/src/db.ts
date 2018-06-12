@@ -10,9 +10,7 @@ import Evaluation from "./evaluations/entity";
 class CustomNamingStrategy extends DefaultNamingStrategy
   implements NamingStrategyInterface {
   tableName(targetName: string, productSpecifiedName: string): string {
-    return productSpecifiedName
-      ? productSpecifiedName
-      : snakeCase(targetName) + "s";
+    return productSpecifiedName ? productSpecifiedName : snakeCase(targetName);
   }
 
   columnName(

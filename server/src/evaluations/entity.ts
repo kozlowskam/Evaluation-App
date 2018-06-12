@@ -3,26 +3,35 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne
+  ManyToOne,
+  UpdateDateColumn
 } from "typeorm";
-import { IsString, IsIn } from "class-validator";
-import Student from "../students/entity";
+import { IsString, IsIn, IsOptional } from "class-validator";
+import Students from "../students/entity";
 
 export type Color = "red" | "yellow" | "green";
 const colorArray: Array<Color> = ["red", "yellow", "green"];
 
 @Entity()
-export default class Evaluation extends BaseEntity {
+export default class Evaluations extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
 
-  @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
-  Date: string;
+  // @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
+  // Date: string;
 
-  @ManyToOne(_ => Student, student => student.evaluations, { eager: false })
-  student: Student;
+  @IsOptional()
+  @UpdateDateColumn({ nullable: true })
+  date: Date;
+
+  @ManyToOne(_ => Students, student => student.evaluations, { eager: false })
+  students: Students;
 
   @IsString()
   @IsIn(colorArray)
   @Column("text", { nullable: false })
   color: Color;
+
+  @IsString()
+  @Column("text", { nullable: true })
+  comment: string;
 }

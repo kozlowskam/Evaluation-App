@@ -8,7 +8,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
 
-class StudentForm extends PureComponent {
+class EvaluationForm extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -21,10 +21,9 @@ class StudentForm extends PureComponent {
     e.preventDefault();
     this.props.onSubmit(this.state);
     this.setState({
-      initialValues: "",
-      firstName: "",
-      lastName: "",
-      image: ""
+      color: "",
+      date: "",
+      comment: ""
     });
   };
 
@@ -50,35 +49,34 @@ class StudentForm extends PureComponent {
           <form onSubmit={this.handleSubmit}>
             <div>
               <TextField
-                label="First name"
-                name="firstName"
-                id="firstName"
-                value={this.state.firstName || initialValues.firstName || ""}
+                label="Color"
+                name="color"
+                id="color"
+                value={this.state.color || initialValues.color || ""}
                 onChange={this.handleChange}
               />
             </div>
             <br />
             <div>
               <TextField
-                label="Last name"
-                name="lastName"
-                id="lastName"
-                value={this.state.lastName || initialValues.lastName || ""}
+                label="Date"
+                name="date"
+                id="date"
+                value={this.state.date || initialValues.date || ""}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <TextField
+                label="Comment"
+                name="comment"
+                id="comment"
+                value={this.state.comment || initialValues.comment || ""}
                 onChange={this.handleChange}
               />
             </div>
             <br />
-            <div>
-              <TextField
-                label="Image"
-                name="image"
-                id="image"
-                value={this.state.image || initialValues.image || ""}
-                onChange={this.handleChange}
-              />
-            </div>
-
-            <Button type="submit">SUBMIT</Button>
+            <Button type="submit">ADD EVALUATION</Button>
           </form>
         </Paper>
       </div>
@@ -86,4 +84,4 @@ class StudentForm extends PureComponent {
   }
 }
 
-export default StudentForm;
+export default EvaluationForm;

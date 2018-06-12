@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { fetchBatch } from "../actions/batch";
 import { fetchAllBatches } from "../actions/batches";
 import Paper from "@material-ui/core/Paper";
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import { addStudent, deleteStudent } from "../actions/students";
+import { addStudent, deleteStudent, getStudent } from "../actions/students";
 import StudentForm from "./StudentForm";
 
 class StudentList extends PureComponent {
@@ -42,6 +43,10 @@ class StudentList extends PureComponent {
     this.props.deleteStudent(studentId);
   }
 
+  getStudent(studentId) {
+    this.props.getStudent(studentId);
+  }
+
   render() {
     const { batch, students } = this.props;
     // console.log(batch);
@@ -74,6 +79,16 @@ class StudentList extends PureComponent {
                       Delete
                     </Button>
                   </td>
+                  <td>
+                    {" "}
+                    <Link
+                      className="link"
+                      to={`/students/${student.id}`}
+                      onClick={() => this.getStudent(batch.id)}
+                    >
+                      DEATAILS
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -100,6 +115,7 @@ export default connect(
     fetchBatch,
     fetchAllBatches,
     addStudent,
-    deleteStudent
+    deleteStudent,
+    getStudent
   }
 )(StudentList);
