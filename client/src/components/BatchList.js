@@ -6,6 +6,8 @@ import { fetchAllBatches } from "../actions/batches";
 import { fetchBatch, addBatch } from "../actions/batch";
 import BatchForm from "./BatchForm";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import { Redirect } from "react-router-dom";
 
 class BatchesList extends PureComponent {
   static propTypes = {
@@ -31,50 +33,51 @@ class BatchesList extends PureComponent {
   };
 
   render() {
-    const { batches, batch } = this.props;
-    console.log(this.props);
+    const { batches, batch, users, authenticated } = this.props;
+
+    if (!authenticated) return <Redirect to="/login" />;
 
     const OrderedBatches = batches.sort(function(a, b) {
       return a.id - b.id;
     });
 
     return (
-      <div className="App">
-        <h1>All the Batches</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Batch NR</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {OrderedBatches.map(batch => (
-              <tr key={batch.id}>
-                <td>{batch.id}</td>
-                <td>{batch.inDate}</td>
-                <td>{batch.endDate}</td>
-                <td>
-                  <Link
-                    className="link"
-                    to={`/batches/${batch.id}`}
-                    onClick={() => this.fetchBatch(batch.id)}
-                  >
-                    See Students
-                  </Link>
-                </td>
+      <div>
+        <Paper className="styles" elevation={4}>
+          <h1>All the Batches</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Batch NR</th>
+                <th>Start Date</th>
+                <th>End Date</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {OrderedBatches.map(batch => (
+                <tr key={batch.id}>
+                  <td>{batch.id}</td>
+                  <td>{batch.inDate}</td>
+                  <td>{batch.endDate}</td>
+                  <td>
+                    <Link
+                      className="link"
+                      to={`/batches/${batch.id}`}
+                      onClick={() => this.fetchBatch(batch.id)}
+                    >
+                      See Students
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        {/* <Link className="link" to={`/createbatch`}>
+          {/* <Link className="link" to={`/createbatch`}>
           create batch
         </Link> */}
-        <Button href={`/createbatch`} target="_blank">
-          Create Batch.
-        </Button>
+          <Button href={`/createbatch`}>Create Batch.</Button>
+        </Paper>
       </div>
     );
   }
@@ -83,7 +86,9 @@ class BatchesList extends PureComponent {
 const mapStateToProps = function(state) {
   return {
     batches: state.batches,
-    batch: state.batch
+    batch: state.batch,
+    authenticated: state.currentUser !== null,
+    users: state.users === null ? null : state.users
   };
 };
 

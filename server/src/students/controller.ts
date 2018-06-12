@@ -1,17 +1,14 @@
 import {
   JsonController,
   NotFoundError,
-  // BadRequestError,
   Post,
   HttpCode,
   Get,
   Body,
   Param,
-  Delete
-
-  //CurrentUser,
-  //Authorized
-  // HttpError
+  Delete,
+  Put,
+  Authorized
 } from "routing-controllers";
 import Students from "./entity";
 import Batch from "../batches/entity";
@@ -24,14 +21,26 @@ export default class StudentController {
     return Students.findOne(id);
   }
 
-  //@Authorized()
+  @Authorized()
   @Get("/students")
   async allStudents() {
     const students = await Students.find();
     return { students };
   }
 
-  //@Authorized()
+  @Authorized()
+  @Put("/students/:id")
+  async updateStudent(
+    @Param("id") id: number,
+    @Body() update: Partial<Students>
+  ) {
+    const student = await Students.findOne(id);
+    if (!student) throw new NotFoundError("Student not found.");
+
+    return Students.merge(student, update).save();
+  }
+
+  @Authorized()
   @Post("/students")
   @HttpCode(201)
   async createStudent(@Body() students: Students) {
@@ -40,6 +49,7 @@ export default class StudentController {
     return students.save();
   }
 
+  @Authorized()
   @Delete("/students/:id")
   async deleteStudent(@Param("id") id: number) {
     const student = await Students.findOne(id);

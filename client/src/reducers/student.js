@@ -11,7 +11,7 @@ export default function(state = student, action) {
       return action.payload;
 
     case DELETE_STUDENT:
-      return state.filter(student => student.id !== action.payload);
+      return student.filter(student => student.id !== action.payload);
 
     case UPDATE_STUDENT:
       if (action.payload.id === state.id) {

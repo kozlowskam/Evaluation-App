@@ -31,7 +31,8 @@ export default class Evaluations extends BaseEntity {
   @Column("text", { nullable: false })
   color: Color;
 
+  @IsOptional()
   @IsString()
-  @Column("text", { nullable: true })
+  @Column("text", { default: "", nullable: true })
   comment: string;
 }

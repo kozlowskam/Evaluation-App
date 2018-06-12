@@ -6,7 +6,8 @@ import {
   HttpCode,
   Get,
   Body,
-  Param
+  Param,
+  Authorized
   // HttpError
 } from "routing-controllers";
 import Batch from "./entity";
@@ -14,20 +15,20 @@ import Batch from "./entity";
 
 @JsonController()
 export default class BatchController {
-  //@Authorized()
+  @Authorized()
   @Get("/batches/:id")
   getBatch(@Param("id") id: number) {
     return Batch.findOne(id);
   }
 
-  //@Authorized()
+  @Authorized()
   @Get("/batches")
   async allBatches() {
     const batches = await Batch.find();
     return { batches };
   }
 
-  //@Authorized()
+  @Authorized()
   @Post("/batches")
   @HttpCode(201)
   createBatch(@Body() batch: Batch) {

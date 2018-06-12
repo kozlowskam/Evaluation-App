@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { updateStudent, getStudent } from "../actions/students";
 import { addEvaluation } from "../actions/evaluation";
 import { fetchBatch } from "../actions/batch";
@@ -15,11 +15,11 @@ class StudentPage extends PureComponent {
     this.state = {};
   }
 
-  //   toggleEdit = () => {
-  //     this.setState({
-  //       edit: !this.state.edit
-  //     });
-  //   };
+  toggleEdit = () => {
+    this.setState({
+      edit: !this.state.edit
+    });
+  };
 
   componentDidUpdate(prevProps) {
     const { id } = this.props.match.params;
@@ -58,51 +58,52 @@ class StudentPage extends PureComponent {
     console.log(student.batch);
   }
 
+  oneBack = event => {
+    this.props.history.go(-1);
+  };
+
   render() {
-    const { student, evaluations, batch } = this.props;
+    const { student, evaluations, batch, users, authenticated } = this.props;
     if (!student) return null;
+    if (!authenticated) return <Redirect to="/login" />;
 
     return (
       <div>
-        <Link
-          className="link"
-          to={`/batches/${student.batch}`}
-          onClick={() => this.fetchBatch(student.batch)}
-        >
-          BACK TO BATCH
-        </Link>
-        {/* {this.state.edit && <StudentForm onSubmit={this.updateStudent} />}
-        {!this.state.edit && (
-          <div>
-            <Button onClick={this.toggleEdit}>edit</Button>
-            <h1>
-              {student.firstName}
-              {student.lastName}
-            </h1>
-          </div>
-        )} */}
-        {student.id && (
-          <table>
-            <thead>
-              <tr>
-                <th>Evaluation Date</th>
-                <th>Color</th>
-                <th>Comment</th>
-              </tr>
-            </thead>
-            <tbody>
-              {student.evaluations.map((evaluation, index) => (
-                <tr key={evaluation.index}>
-                  <td>{evaluation.date}</td>
-                  <td>{evaluation.color}</td>
-                  <td>{evaluation.comment}</td>
+        <Paper className="styles" elevation={4}>
+          <Button onClick={this.oneBack}>BACK TO BATCH </Button>
+          {this.state.edit && <StudentForm onSubmit={this.updateStudent} />}
+          {!this.state.edit && (
+            <div>
+              <Button onClick={this.toggleEdit}>edit</Button>
+              <h1>
+                {student.firstName} <span />
+                {student.lastName}
+              </h1>
+            </div>
+          )}
+          {student.id && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Evaluation Date</th>
+                  <th>Color</th>
+                  <th>Comment</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {student.evaluations.map((evaluation, index) => (
+                  <tr key={evaluation.index}>
+                    <td>{evaluation.date}</td>
+                    <td>{evaluation.color}</td>
+                    <td>{evaluation.comment}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
 
-        <EvaluationForm onSubmit={this.addEvaluation} />
+          <EvaluationForm onSubmit={this.addEvaluation} />
+        </Paper>
       </div>
     );
   }
@@ -111,7 +112,9 @@ class StudentPage extends PureComponent {
 const mapStateToProps = function(state, props) {
   return {
     student: state.student,
-    evaluations: state.evaluations
+    evaluations: state.evaluations,
+    authenticated: state.currentUser !== null,
+    users: state.users === null ? null : state.users
   };
 };
 

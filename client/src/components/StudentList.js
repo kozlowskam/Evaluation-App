@@ -7,20 +7,25 @@ import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { addStudent, deleteStudent, getStudent } from "../actions/students";
 import StudentForm from "./StudentForm";
+import { Redirect } from "react-router-dom";
 
 class StudentList extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  componentDidUpdate(prevProps) {
+
+  // componentDidUpdate(prevProps) {
+  //   const { id } = this.props.match.params;
+
+  //   if (!this.props.batch.students.length != prevProps.batch.students.length) {
+  //     this.props.fetchBatch(id);
+  //   }
+  // }
+
+  componentWillMount() {
     const { id } = this.props.match.params;
-
-    if (!this.props.batch !== prevProps.batch) {
-      this.props.fetchBatch(id);
-    }
-
-    console.log(this.props);
+    this.props.fetchBatch(id);
   }
 
   componentDidMount() {
@@ -48,55 +53,55 @@ class StudentList extends PureComponent {
   }
 
   render() {
-    const { batch, students } = this.props;
+    const { batch, students, users, authenticated } = this.props;
     // console.log(batch);
+    if (!authenticated) return <Redirect to="/login" />;
 
     return (
       <div>
-        <Button type="submit" href="/batches">
-          HOME
-        </Button>
-        {!batch.id && <div>Loading...</div>}
-        {batch.id && (
-          <table>
-            <thead>
-              <tr>
-                <th>First name</th>
-                <th>Last name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {batch.students.map((student, index) => (
-                <tr key={student.index}>
-                  <td>{student.firstName}</td>
-                  <td>{student.lastName}</td>
-                  <td>
-                    {" "}
-                    <Button
-                      className="deleteButton"
-                      onClick={() => this.deleteStudent(student.id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                  <td>
-                    {" "}
-                    <Link
-                      className="link"
-                      to={`/students/${student.id}`}
-                      onClick={() => this.getStudent(batch.id)}
-                    >
-                      DEATAILS
-                    </Link>
-                  </td>
+        <Paper className="styles" elevation={4}>
+          {!batch.id && <div>Loading...</div>}
+          {batch.id && (
+            <table>
+              <thead>
+                <tr>
+                  <th>First name</th>
+                  <th>Last name</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {batch.students.map((student, index) => (
+                  <tr key={student.index}>
+                    <td>{student.firstName}</td>
+                    <td>{student.lastName}</td>
+                    <td>
+                      {" "}
+                      <Button
+                        className="deleteButton"
+                        onClick={() => this.deleteStudent(student.id)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                    <td>
+                      {" "}
+                      <Link
+                        className="link"
+                        to={`/students/${student.id}`}
+                        onClick={() => this.getStudent(student.id)}
+                      >
+                        DEATAILS
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
 
-        <h1>Add new student</h1>
-        <StudentForm onSubmit={this.addStudent} />
+          <h1>Add new student</h1>
+          <StudentForm onSubmit={this.addStudent} />
+        </Paper>
       </div>
     );
   }
@@ -105,7 +110,9 @@ class StudentList extends PureComponent {
 const mapStateToProps = function(state) {
   return {
     batch: state.batch,
-    students: state.students
+    students: state.students,
+    authenticated: state.currentUser !== null,
+    users: state.users === null ? null : state.users
   };
 };
 
