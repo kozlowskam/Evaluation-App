@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { fetchAllBatches } from "../actions/batches";
 import { fetchBatch, addBatch } from "../actions/batch";
 import BatchForm from "./BatchForm";
+import Button from "@material-ui/core/Button";
 
 class BatchesList extends PureComponent {
   static propTypes = {
@@ -33,7 +34,9 @@ class BatchesList extends PureComponent {
     const { batches, batch } = this.props;
     console.log(this.props);
 
-    //const batch = this.props.batches[this.props.match.params.id];
+    const OrderedBatches = batches.sort(function(a, b) {
+      return a.id - b.id;
+    });
 
     return (
       <div className="App">
@@ -41,15 +44,17 @@ class BatchesList extends PureComponent {
         <table>
           <thead>
             <tr>
-              <th>#</th>
-              <th>Dates</th>
+              <th>Batch NR</th>
+              <th>Start Date</th>
+              <th>End Date</th>
             </tr>
           </thead>
           <tbody>
-            {batches.map(batch => (
+            {OrderedBatches.map(batch => (
               <tr key={batch.id}>
                 <td>{batch.id}</td>
-                <td>{batch.dates}</td>
+                <td>{batch.inDate}</td>
+                <td>{batch.endDate}</td>
                 <td>
                   <Link
                     className="link"
@@ -63,7 +68,13 @@ class BatchesList extends PureComponent {
             ))}
           </tbody>
         </table>
-        <BatchForm onSubmit={this.addBatch} />
+
+        {/* <Link className="link" to={`/createbatch`}>
+          create batch
+        </Link> */}
+        <Button href={`/createbatch`} target="_blank">
+          Create Batch.
+        </Button>
       </div>
     );
   }

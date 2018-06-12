@@ -39,10 +39,19 @@ class BatchForm extends PureComponent {
           <form onSubmit={this.handleSubmit}>
             <div>
               <TextField
-                label="Academy Dates"
-                name="dates"
-                id="dates"
-                value={this.state.dates || initialValues.dates || ""}
+                label="Start Date"
+                name="inDate"
+                id="inDate"
+                value={this.state.inDate || initialValues.inDate || ""}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <TextField
+                label="End Date"
+                name="endDate"
+                id="endDate"
+                value={this.state.endDate || initialValues.endDate || ""}
                 onChange={this.handleChange}
               />
             </div>

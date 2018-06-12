@@ -5,14 +5,19 @@ import {
   Column,
   OneToMany
 } from "typeorm";
-import Student from "../students/entity";
+import Students from "../students/entity";
 
 @Entity()
 export default class Batch extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
 
-  @Column() dates: string;
+  @Column() inDate: string;
 
-  @OneToMany(_ => Student, student => student.batch)
-  students: Student[];
+  @Column() endDate: string;
+
+  @OneToMany(_ => Students, student => student.batch, {
+    eager: true,
+    cascade: true
+  })
+  students: Students[];
 }

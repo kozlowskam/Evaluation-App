@@ -21,8 +21,9 @@ class StudentForm extends PureComponent {
     e.preventDefault();
     this.props.onSubmit(this.state);
     this.setState({
-      first_name: "",
-      last_name: "",
+      initialValues: "",
+      firstName: "",
+      lastName: "",
       image: ""
     });
   };
@@ -50,9 +51,9 @@ class StudentForm extends PureComponent {
             <div>
               <TextField
                 label="First name"
-                name="first_name"
-                id="first_name"
-                value={this.state.first_name || initialValues.first_name || ""}
+                name="firstName"
+                id="firstName"
+                value={this.state.firstName || initialValues.firstName || ""}
                 onChange={this.handleChange}
               />
             </div>
@@ -60,9 +61,9 @@ class StudentForm extends PureComponent {
             <div>
               <TextField
                 label="Last name"
-                name="last_name"
-                id="last_name"
-                value={this.state.last_name || initialValues.last_name || ""}
+                name="lastName"
+                id="lastName"
+                value={this.state.lastName || initialValues.lastName || ""}
                 onChange={this.handleChange}
               />
             </div>

@@ -18,7 +18,7 @@ export default class Evaluation extends BaseEntity {
   @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
   Date: string;
 
-  @ManyToOne(_ => Student, student => student.evaluations)
+  @ManyToOne(_ => Student, student => student.evaluations, { eager: false })
   student: Student;
 
   @IsString()

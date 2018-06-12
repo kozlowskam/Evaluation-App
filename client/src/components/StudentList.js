@@ -4,7 +4,7 @@ import { fetchBatch } from "../actions/batch";
 import { fetchAllBatches } from "../actions/batches";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import { addStudent } from "../actions/students";
+import { addStudent, deleteStudent } from "../actions/students";
 import StudentForm from "./StudentForm";
 
 class StudentList extends PureComponent {
@@ -12,37 +12,50 @@ class StudentList extends PureComponent {
     super(props);
     this.state = {};
   }
-  componentWillMount() {
-    this.props.fetchBatch();
+  componentDidUpdate(prevProps) {
+    const { id } = this.props.match.params;
+
+    if (!this.props.batch !== prevProps.batch) {
+      this.props.fetchBatch(id);
+    }
+
     console.log(this.props);
   }
-  //   componentDidMount() {
-  //     const { id } = this.props.match.params;
 
-  //     if (!this.props.batch) {
-  //       this.props.fetchBatch(id);
-  //     }
-  //   }
+  componentDidMount() {
+    const { id } = this.props.match.params;
+
+    if (!this.props.batch.id) {
+      this.props.fetchBatch(id);
+    }
+  }
 
   addStudent = student => {
-    let batch = this.props;
+    const { batch } = this.props;
     console.log(batch);
     student = { ...student, batch: batch.id };
+    console.log(batch.id);
     this.props.addStudent(student);
   };
 
+  deleteStudent(studentId) {
+    this.props.deleteStudent(studentId);
+  }
+
   render() {
-    const { batch } = this.props;
+    const { batch, students } = this.props;
     // console.log(batch);
 
     return (
       <div>
-        {!this.props.batch && <div>Loading...</div>}
-        {this.props.batch(
+        <Button type="submit" href="/batches">
+          HOME
+        </Button>
+        {!batch.id && <div>Loading...</div>}
+        {batch.id && (
           <table>
             <thead>
               <tr>
-                <th>#</th>
                 <th>First name</th>
                 <th>Last name</th>
               </tr>
@@ -50,8 +63,17 @@ class StudentList extends PureComponent {
             <tbody>
               {batch.students.map((student, index) => (
                 <tr key={student.index}>
-                  <td>{student.first_name}</td>
-                  <td>{student.last_name}</td>
+                  <td>{student.firstName}</td>
+                  <td>{student.lastName}</td>
+                  <td>
+                    {" "}
+                    <Button
+                      className="deleteButton"
+                      onClick={() => this.deleteStudent(student.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -68,7 +90,7 @@ class StudentList extends PureComponent {
 const mapStateToProps = function(state) {
   return {
     batch: state.batch,
-    batches: state.batches
+    students: state.students
   };
 };
 
@@ -77,6 +99,7 @@ export default connect(
   {
     fetchBatch,
     fetchAllBatches,
-    addStudent
+    addStudent,
+    deleteStudent
   }
 )(StudentList);

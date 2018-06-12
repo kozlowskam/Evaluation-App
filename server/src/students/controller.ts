@@ -1,13 +1,14 @@
 import {
   JsonController,
-  //NotFoundError,
+  NotFoundError,
   // BadRequestError,
   Post,
   HttpCode,
   Get,
   Body,
-  Param
-  //Delete,
+  Param,
+  Delete
+
   //CurrentUser,
   //Authorized
   // HttpError
@@ -39,15 +40,13 @@ export default class StudentController {
     return students.save();
   }
 
-  //   @Delete("/students/:id")
-  //   async deleteStudent(
-  //     @Param('id') id: number
-  // ) {
-  //     const student = await Student.findOneById(id)
+  @Delete("/students/:id")
+  async deleteStudent(@Param("id") id: number) {
+    const student = await Students.findOne(id);
 
-  //     if (!student) throw new NotFoundError('Student not found.')
+    if (!student) throw new NotFoundError("Student not found.");
 
-  //     if (student) Student.removeById(id)
-  //     return 'Question Deleted.'
-  // }
+    if (student) Students.delete(id);
+    return "Question Deleted.";
+  }
 }

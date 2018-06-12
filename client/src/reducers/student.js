@@ -3,7 +3,7 @@ import { DELETE_STUDENT } from "../actions/students";
 import { UPDATE_STUDENT } from "../actions/students";
 import { GET_DET_STUDENT } from "../actions/students";
 
-const student = {};
+const student = [];
 
 export default function(state = student, action) {
   switch (action.type) {
@@ -11,7 +11,7 @@ export default function(state = student, action) {
       return action.payload;
 
     case DELETE_STUDENT:
-      return state.filter(quiz => quiz.id !== action.payload);
+      return state.filter(student => student.id !== action.payload);
 
     case UPDATE_STUDENT:
       if (action.payload.id === state.id) {
