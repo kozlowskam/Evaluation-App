@@ -21,7 +21,6 @@ class BatchesList extends PureComponent {
 
   componentWillMount() {
     this.props.fetchAllBatches();
-    console.log(this.props);
   }
 
   fetchBatch(batchId) {

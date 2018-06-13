@@ -5,6 +5,7 @@ import { isExpired } from "../jwt";
 
 export const FETCH_BATCH = "FETCH_BATCH";
 export const ADD_BATCH = "ADD_BATCH";
+export const FETCH_BATCH_EV = "FETCH_BATCH_EV";
 
 export const fetchBatch = batchId => (dispatch, getState) => {
   const state = getState();
@@ -20,6 +21,25 @@ export const fetchBatch = batchId => (dispatch, getState) => {
       dispatch({
         type: FETCH_BATCH,
         payload: response.body
+      })
+    )
+    .catch(err => alert(err));
+};
+
+export const fetchBatchEv = batchId => (dispatch, getState) => {
+  const state = getState();
+  if (!state.currentUser) return null;
+  const jwt = state.currentUser.jwt;
+
+  if (isExpired(jwt)) return dispatch(logout());
+
+  request
+    .get(`${baseUrl}/batches/${batchId}`)
+    .set("Authorization", `Bearer ${jwt}`)
+    .then(response =>
+      dispatch({
+        type: FETCH_BATCH_EV,
+        payload: response.body.value
       })
     )
     .catch(err => alert(err));

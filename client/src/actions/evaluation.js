@@ -26,7 +26,6 @@ export const getEvaluation = evaluationId => (dispatch, getState) => {
     )
     .catch(err => alert(err));
 };
-
 export const addEvaluation = evaluation => (dispatch, getState) => {
   const state = getState();
   if (!state.currentUser) return null;

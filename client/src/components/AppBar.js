@@ -14,6 +14,13 @@ const styles = {
   root: {
     flexGrow: 1,
     textAlign: "center"
+  },
+  card: {
+    maxWidth: 345
+  },
+  media: {
+    height: 0,
+    paddingTop: "56.25%" // 16:9
   }
 };
 

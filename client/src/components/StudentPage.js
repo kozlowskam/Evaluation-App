@@ -4,10 +4,12 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { Link, Redirect } from "react-router-dom";
 import { updateStudent, getStudent } from "../actions/students";
-import { addEvaluation } from "../actions/evaluation";
+import { addEvaluation, updateEvaluation } from "../actions/evaluation";
+import { getStudentEvaluation } from "../actions/evaluations";
 import { fetchBatch } from "../actions/batch";
 import StudentForm from "./StudentForm";
 import EvaluationForm from "./EvaluationForm";
+import Moment from "react-moment";
 
 class StudentPage extends PureComponent {
   constructor(props) {
@@ -42,6 +44,11 @@ class StudentPage extends PureComponent {
     //this.toggleEdit();
   };
 
+  getStudentEvaluation(studentId) {
+    this.props.getStudentEvaluation(studentId);
+    console.log(this.props.getStudentEvaluation(studentId));
+  }
+
   addEvaluation = evaluation => {
     const { student } = this.props;
     console.log(student);
@@ -50,13 +57,13 @@ class StudentPage extends PureComponent {
     this.props.addEvaluation(evaluation);
   };
 
-  fetchBatch() {
-    const { student } = this.props;
-    console.log(student);
-    const batchId = student.batch;
-    this.props.fetchBatch(batchId);
-    console.log(student.batch);
-  }
+  // fetchBatch() {
+  //   const { student } = this.props;
+  //   console.log(student);
+  //   const batchId = student.batch;
+  //   this.props.fetchBatch(batchId);
+  //   console.log(student.batch);
+  // }
 
   oneBack = event => {
     this.props.history.go(-1);
@@ -93,8 +100,13 @@ class StudentPage extends PureComponent {
               <tbody>
                 {student.evaluations.map((evaluation, index) => (
                   <tr key={evaluation.index}>
-                    <td>{evaluation.date}</td>
-                    <td>{evaluation.color}</td>
+                    <td>
+                      {" "}
+                      <Moment format="YYYY/MM/DD">
+                        {evaluation.date}
+                      </Moment>{" "}
+                    </td>
+                    <td> {evaluation.color}</td>
                     <td>{evaluation.comment}</td>
                   </tr>
                 ))}
@@ -120,5 +132,5 @@ const mapStateToProps = function(state, props) {
 
 export default connect(
   mapStateToProps,
-  { getStudent, updateStudent, addEvaluation, fetchBatch }
+  { getStudent, updateStudent, addEvaluation, fetchBatch, getStudentEvaluation }
 )(StudentPage);

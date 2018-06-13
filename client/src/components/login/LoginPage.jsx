@@ -10,6 +10,13 @@ class LoginPage extends PureComponent {
     this.props.login(data.email, data.password);
   };
 
+  componentDidMount() {
+    this.handleSubmit({
+      email: "gosia@test.com",
+      password: "test12345"
+    });
+  }
+
   render() {
     if (this.props.currentUser) return <Redirect to="/" />;
 
