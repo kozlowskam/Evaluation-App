@@ -50,10 +50,6 @@ class StudentList extends PureComponent {
     this.props.getStudent(studentId);
   }
 
-  askQuestion() {
-    let randomNumber = Math.floor(Math.random() * 100 + 1);
-  }
-
   render() {
     const { students, users, authenticated } = this.props;
 
@@ -68,21 +64,23 @@ class StudentList extends PureComponent {
 
     const batch = this.props.activeBatch;
     const studentsGroup = batch.students;
-    console.log(studentsGroup);
+    //console.log(studentsGroup);
 
     const BatchEvaluations = studentsGroup.map(st => {
       return {
         evaluation: st.evaluations.sort((a, b) => {
           return a.id - b.id;
-        })[st.evaluations.length - 1]
+        })[st.evaluations.length - 1],
+        student: st.id
       };
     });
 
-    console.log(BatchEvaluations);
+    //console.log(BatchEvaluations[0].student);
 
     const GreenEvaluations = BatchEvaluations.filter(
       ev => ev.evaluation.color === "green"
     );
+    //console.log(GreenEvaluations);
 
     const YellowEvaluations = BatchEvaluations.filter(
       ev => ev.evaluation.color === "yellow"
@@ -107,12 +105,44 @@ class StudentList extends PureComponent {
       100
     ).toFixed(0);
 
+    const ColorArray = Array(20)
+      .fill("green")
+      .concat(Array(45).fill("red"), Array(35).fill("yellow"));
+    //console.log(ColorArray);
+
+    let randomColor = ColorArray[Math.floor(Math.random() * ColorArray.length)];
+
+    let randomStudentId;
+
+    if (randomColor === "red" && RedEvaluations.length > 0) {
+      randomStudentId =
+        RedEvaluations[Math.floor(Math.random() * RedEvaluations.length)]
+          .student;
+    }
+    if (randomColor === "green" && GreenEvaluations.length > 0) {
+      randomStudentId =
+        GreenEvaluations[Math.floor(Math.random() * GreenEvaluations.length)]
+          .student;
+    }
+    if (randomColor === "red" && YellowEvaluations.length > 0) {
+      randomStudentId =
+        YellowEvaluations[Math.floor(Math.random() * YellowEvaluations.length)]
+          .student;
+    } else {
+      randomStudentId =
+        BatchEvaluations[Math.floor(Math.random() * BatchEvaluations.length)]
+          .student;
+    }
+
+    console.log(randomStudentId);
+
     return (
       <div>
         <Paper className="styles" elevation={4}>
           {!batch.id && <div>Loading...</div>}
 
           <br />
+
           {batch.id &&
             batch.students && (
               <table>
@@ -172,6 +202,7 @@ class StudentList extends PureComponent {
           <p> Green Evaluation {GreenAmount} %</p>
           <p> Yellow Evaluation {YellowAmount} %</p>
           <p> Red Evaluation {RedAmount} %</p>
+          <p> {this.askQuestion} </p>
         </Paper>
       </div>
     );
