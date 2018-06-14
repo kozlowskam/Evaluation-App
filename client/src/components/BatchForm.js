@@ -39,6 +39,17 @@ class BatchForm extends PureComponent {
           <form onSubmit={this.handleSubmit}>
             <div>
               <TextField
+                label="Batch NR"
+                name="batchNumber"
+                id="batchNumber"
+                value={
+                  this.state.batchNumber || initialValues.batchNumber || ""
+                }
+                onChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <TextField
                 label="Start Date"
                 name="inDate"
                 id="inDate"

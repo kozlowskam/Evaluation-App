@@ -31,9 +31,6 @@ export class CreateBatch extends PureComponent {
     return (
       <div>
         <Paper className="styles" elevation={4}>
-          <Button type="submit" href="/batches">
-            HOME
-          </Button>
           <h2> Create Batch </h2>
           <BatchForm onSubmit={this.addBatch} />
           <br />

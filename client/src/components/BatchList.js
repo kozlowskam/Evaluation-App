@@ -8,6 +8,7 @@ import BatchForm from "./BatchForm";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { Redirect } from "react-router-dom";
+import "../App.css";
 
 class BatchesList extends PureComponent {
   static propTypes = {
@@ -55,7 +56,7 @@ class BatchesList extends PureComponent {
             <tbody>
               {OrderedBatches.map(batch => (
                 <tr key={batch.id}>
-                  <td>{batch.id}</td>
+                  <td>{batch.batchNumber}</td>
                   <td>{batch.inDate}</td>
                   <td>{batch.endDate}</td>
                   <td>
@@ -71,11 +72,11 @@ class BatchesList extends PureComponent {
               ))}
             </tbody>
           </table>
-
-          {/* <Link className="link" to={`/createbatch`}>
-          create batch
-        </Link> */}
-          <Button href={`/createbatch`}>Create Batch.</Button>
+          <br />
+          <br />
+          <Link className="link" to={`/createbatch`}>
+            CREATE BATCH
+          </Link>
         </Paper>
       </div>
     );

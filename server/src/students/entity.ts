@@ -6,7 +6,7 @@ import {
   ManyToOne,
   OneToMany
 } from "typeorm";
-import { MinLength, IsString, IsOptional } from "class-validator";
+import { MinLength, IsString } from "class-validator";
 import Batch from "../batches/entity";
 import Evaluations from "../evaluations/entity";
 import { Url } from "url";
@@ -35,9 +35,4 @@ export default class Student extends BaseEntity {
     eager: true
   })
   evaluations: Evaluations[];
-
-  @IsOptional()
-  @IsString()
-  @Column("text", { nullable: true })
-  lastEvaluation: string;
 }

@@ -13,6 +13,7 @@ import StudentForm from "./StudentForm";
 import { Redirect } from "react-router-dom";
 import BatchEvaluation from "./BatchEvaluation";
 import Moment from "react-moment";
+import "../App.css";
 
 class StudentList extends PureComponent {
   constructor(props) {
@@ -54,7 +55,7 @@ class StudentList extends PureComponent {
     const { students, users, authenticated } = this.props;
 
     if (
-      !this.props.activeBatch ||
+      !this.props.activeBatch.students ||
       this.props.activeBatch.id !== parseInt(this.props.match.params.id)
     ) {
       this.componentReload();
@@ -64,18 +65,26 @@ class StudentList extends PureComponent {
 
     const batch = this.props.activeBatch;
     const studentsGroup = batch.students;
-    //console.log(studentsGroup);
+    console.log(studentsGroup);
 
     const BatchEvaluations = studentsGroup.map(st => {
+      if (st.evaluations.length > 0)
+        return {
+          evaluation: st.evaluations.sort((a, b) => {
+            return a.id - b.id;
+          })[st.evaluations.length - 1],
+          student: st.id
+        };
       return {
-        evaluation: st.evaluations.sort((a, b) => {
-          return a.id - b.id;
-        })[st.evaluations.length - 1],
-        student: st.id
+        evaluation: "undefined",
+        st
       };
     });
+    console.log(BatchEvaluations);
 
-    //console.log(BatchEvaluations[0].student);
+    const noEvaluation = BatchEvaluations.filter(
+      ev => (ev.evaluations = "undefined")
+    );
 
     const GreenEvaluations = BatchEvaluations.filter(
       ev => ev.evaluation.color === "green"
@@ -130,8 +139,7 @@ class StudentList extends PureComponent {
           .student;
     } else {
       randomStudentId =
-        BatchEvaluations[Math.floor(Math.random() * BatchEvaluations.length)]
-          .student;
+        studentsGroup[Math.floor(Math.random() * studentsGroup.length)].id;
     }
 
     console.log(randomStudentId);
@@ -139,7 +147,7 @@ class StudentList extends PureComponent {
     return (
       <div>
         <Paper className="styles" elevation={4}>
-          {!batch.id && <div>Loading...</div>}
+          {!batch.students && <div>Loading...</div>}
 
           <br />
 
@@ -198,11 +206,17 @@ class StudentList extends PureComponent {
           <h1>{this.getGreen}</h1>
           <h1>Add new student</h1>
           <StudentForm onSubmit={this.addStudent} />
-          {/* //{!GreenAmount == NAN && !YellowAmount == NAN && RedAmount == NAN ( */}
+
           <p> Green Evaluation {GreenAmount} %</p>
           <p> Yellow Evaluation {YellowAmount} %</p>
           <p> Red Evaluation {RedAmount} %</p>
-          <p> {this.askQuestion} </p>
+          <Link
+            className="link"
+            to={`/students/${randomStudentId}`}
+            onClick={() => this.getStudent(randomStudentId)}
+          >
+            ASK Question
+          </Link>
         </Paper>
       </div>
     );

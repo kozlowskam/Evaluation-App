@@ -11,9 +11,14 @@ import Student from "../students/entity";
 export default class Batch extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
 
-  @Column() inDate: string;
+  @Column("integer", { nullable: true })
+  batchNumber: number;
 
-  @Column() endDate: string;
+  @Column("text", { nullable: true })
+  inDate: string;
+
+  @Column("text", { nullable: true })
+  endDate: string;
 
   @OneToMany(_ => Student, student => student.batch, {
     eager: true,
