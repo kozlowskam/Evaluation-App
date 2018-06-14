@@ -70,35 +70,42 @@ class StudentList extends PureComponent {
     const studentsGroup = batch.students;
     console.log(studentsGroup);
 
-    // const greenStudents = studentsGroup
-    //   .map(student => {
-    //     return student.evaluations;
-    //   })
-    //   .sort(function(a, b) {
-    //     return a.id - b.id;
-    //   })
-    //   [student.evaluations.length - 1].evaluation.filter(
-    //     evaluation => evaluation.color === "green"
-    //   ).lenght;
-    // console.log(greenStudents);
+    const BatchEvaluations = studentsGroup.map(st => {
+      return {
+        evaluation: st.evaluations.sort((a, b) => {
+          return a.id - b.id;
+        })[st.evaluations.length - 1]
+      };
+    });
 
-    // const BatchEvaluations = batch.evaluations.map(evaluation => {
-    //   return;
-    //   evaluation.color;
-    //   console.log(evaluation.color);
-    // });
+    console.log(BatchEvaluations);
 
-    // const BatchEvaluations = batch.evaluations;
-    // console.log(BatchEvaluation);
+    const GreenEvaluations = BatchEvaluations.filter(
+      ev => ev.evaluation.color === "green"
+    );
 
-    // const EvGreen = (
-    //   (BatchEvaluations.filter(ev => {
-    //     return ev.color === "green";
-    //   }).length /
-    //     BatchEvaluation.lenght) *
-    //   100
-    // ).toFixed(0);
-    // console.log(EvGreen);
+    const YellowEvaluations = BatchEvaluations.filter(
+      ev => ev.evaluation.color === "yellow"
+    );
+
+    const RedEvaluations = BatchEvaluations.filter(
+      ev => ev.evaluation.color === "red"
+    );
+
+    const GreenAmount = (
+      (GreenEvaluations.length / BatchEvaluations.length) *
+      100
+    ).toFixed(0);
+
+    const YellowAmount = (
+      (YellowEvaluations.length / BatchEvaluations.length) *
+      100
+    ).toFixed(0);
+
+    const RedAmount = (
+      (RedEvaluations.length / BatchEvaluations.length) *
+      100
+    ).toFixed(0);
 
     return (
       <div>
@@ -161,7 +168,10 @@ class StudentList extends PureComponent {
           <h1>{this.getGreen}</h1>
           <h1>Add new student</h1>
           <StudentForm onSubmit={this.addStudent} />
-          <BatchEvaluation />
+          {/* //{!GreenAmount == NAN && !YellowAmount == NAN && RedAmount == NAN ( */}
+          <p> Green Evaluation {GreenAmount} %</p>
+          <p> Yellow Evaluation {YellowAmount} %</p>
+          <p> Red Evaluation {RedAmount} %</p>
         </Paper>
       </div>
     );

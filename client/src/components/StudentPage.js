@@ -64,7 +64,9 @@ class StudentPage extends PureComponent {
       ...evaluation,
       student: student.id
     };
+
     this.props.addEvaluation(evaluation);
+
     this.componentReload();
     console.log(student.id);
   };
