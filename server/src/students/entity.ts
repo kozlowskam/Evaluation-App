@@ -12,7 +12,7 @@ import Evaluations from "../evaluations/entity";
 import { Url } from "url";
 
 @Entity()
-export default class Students extends BaseEntity {
+export default class Student extends BaseEntity {
   @PrimaryGeneratedColumn() id?: number;
 
   @IsString()
@@ -31,7 +31,7 @@ export default class Students extends BaseEntity {
   @ManyToOne(_ => Batch, batch => batch.students, { eager: false })
   batch: Batch;
 
-  @OneToMany(_ => Evaluations, evaluation => evaluation.students, {
+  @OneToMany(_ => Evaluations, evaluation => evaluation.student, {
     eager: true
   })
   evaluations: Evaluations[];

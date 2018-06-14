@@ -12,7 +12,7 @@ import {
 } from "routing-controllers";
 import Evaluations from "./entity";
 //import * as request from "superagent";
-import Students from "../students/entity";
+import Student from "../students/entity";
 
 @JsonController()
 export default class EvaluationController {
@@ -33,8 +33,8 @@ export default class EvaluationController {
   @Post("/evaluations")
   @HttpCode(201)
   async createEvaluation(@Body() evaluations: Evaluations) {
-    const student = (await Students.findOne(evaluations.students))!;
-    evaluations.students = student;
+    const student = (await Student.findOne(evaluations.student))!;
+    evaluations.student = student;
     return evaluations.save();
   }
 

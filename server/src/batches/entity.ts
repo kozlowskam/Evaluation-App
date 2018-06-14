@@ -5,7 +5,7 @@ import {
   Column,
   OneToMany
 } from "typeorm";
-import Students from "../students/entity";
+import Student from "../students/entity";
 
 @Entity()
 export default class Batch extends BaseEntity {
@@ -15,9 +15,9 @@ export default class Batch extends BaseEntity {
 
   @Column() endDate: string;
 
-  @OneToMany(_ => Students, student => student.batch, {
+  @OneToMany(_ => Student, student => student.batch, {
     eager: true,
     cascade: true
   })
-  students: Students[];
+  students: Student[];
 }
