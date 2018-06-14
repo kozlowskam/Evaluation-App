@@ -31,7 +31,7 @@ class StudentPage extends PureComponent {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { id } = this.props.match.params;
 
     if (!this.props.student.id) {
@@ -39,15 +39,15 @@ class StudentPage extends PureComponent {
     }
   }
 
-  componentReload() {
-    this.props.getStudent(this.props.match.params.id);
-  }
+  // componentReload() {
+  //   this.props.getStudent(this.props.match.params.id);
+  // }
 
-  handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
+  // handleChange = event => {
+  //   this.setState({
+  //     [event.target.name]: event.target.value
+  //   });
+  // };
 
   updateStudent = student => {
     this.props.updateStudent(this.props.match.params.id, student);
