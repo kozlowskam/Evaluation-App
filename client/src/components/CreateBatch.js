@@ -26,7 +26,7 @@ export class CreateBatch extends PureComponent {
   render() {
     const { batch, student, users, authenticated } = this.props;
 
-    if (!authenticated) return <Redirect to="/login" />;
+    // if (!authenticated) return <Redirect to="/login" />;
 
     return (
       <div>

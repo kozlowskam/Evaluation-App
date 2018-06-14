@@ -11,6 +11,7 @@ div form :last-child {
 
 .styles {
   margin-top: 20px;
+  background-color: rgb(203, 255, 160);
   color: black;
   display: flex;
   flex-direction: column;

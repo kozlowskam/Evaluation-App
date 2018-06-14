@@ -17,7 +17,7 @@ import Moment from "react-moment";
 class StudentList extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { id: this.props.match.params.id };
+    this.state = { id: this.props.match.params.id, isHidden: true };
   }
 
   componentWillMount() {
@@ -33,6 +33,12 @@ class StudentList extends PureComponent {
       [event.target.name]: event.target.value
     });
   };
+
+  toggleHidden() {
+    this.setState({
+      isHidden: !this.state.isHidden
+    });
+  }
 
   addStudent = student => {
     const { activeBatch } = this.props;
@@ -75,6 +81,10 @@ class StudentList extends PureComponent {
       };
     });
 
+    const noEvaluation = BatchEvaluations.filter(
+      ev => (ev.evaluation = "undefined")
+    );
+
     //console.log(BatchEvaluations[0].student);
 
     const GreenEvaluations = BatchEvaluations.filter(
@@ -114,6 +124,11 @@ class StudentList extends PureComponent {
 
     let randomStudentId;
 
+    // if BatchEvaluations
+    // const noEvaluation = BatchEvaluations.filter(
+    //   ev => ev.evaluation === "undefined"
+    // );
+
     if (randomColor === "red" && RedEvaluations.length > 0) {
       randomStudentId =
         RedEvaluations[Math.floor(Math.random() * RedEvaluations.length)]
@@ -133,7 +148,6 @@ class StudentList extends PureComponent {
         BatchEvaluations[Math.floor(Math.random() * BatchEvaluations.length)]
           .student;
     }
-
     console.log(randomStudentId);
 
     return (
@@ -195,14 +209,21 @@ class StudentList extends PureComponent {
                 </tbody>
               </table>
             )}
-          <h1>{this.getGreen}</h1>
           <h1>Add new student</h1>
           <StudentForm onSubmit={this.addStudent} />
-          {/* //{!GreenAmount == NAN && !YellowAmount == NAN && RedAmount == NAN ( */}
+
           <p> Green Evaluation {GreenAmount} %</p>
           <p> Yellow Evaluation {YellowAmount} %</p>
           <p> Red Evaluation {RedAmount} %</p>
-          <p> {this.askQuestion} </p>
+          <div>
+            <Link
+              className="link"
+              to={`/students/${randomStudentId}`}
+              onClick={() => this.getStudent(randomStudentId)}
+            >
+              ASK Question
+            </Link>
+          </div>
         </Paper>
       </div>
     );

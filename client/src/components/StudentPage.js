@@ -102,6 +102,7 @@ class StudentPage extends PureComponent {
       <div>
         <Paper className="styles" elevation={4}>
           <Button onClick={this.oneBack}>BACK TO BATCH </Button>
+          <br />
           {this.state.edit && <StudentForm onSubmit={this.updateStudent} />}
 
           {!this.state.edit && (

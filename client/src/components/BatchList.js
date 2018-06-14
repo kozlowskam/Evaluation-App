@@ -75,6 +75,7 @@ class BatchesList extends PureComponent {
           {/* <Link className="link" to={`/createbatch`}>
           create batch
         </Link> */}
+          <br />
           <Button href={`/createbatch`}>Create Batch.</Button>
         </Paper>
       </div>

@@ -28,7 +28,7 @@ const TopBar = props => {
   const { location, history, user } = props;
 
   return (
-    <AppBar position="static" color="primary" align="center">
+    <AppBar position="static" color="inherit" align="center">
       <Toolbar>
         <Typography variant="title" color="inherit" style={{ flex: 1 }}>
           Evaluation App
