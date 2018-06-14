@@ -106,57 +106,58 @@ class StudentList extends PureComponent {
           {!batch.id && <div>Loading...</div>}
 
           <br />
-          {batch.id && (
-            <table>
-              <thead>
-                <tr>
-                  <th> </th>
-                  <th>First name</th>
-                  <th>Last name</th>
-                  <th>Last evaluation</th>
-                </tr>
-              </thead>
-              <tbody>
-                {batch.students.map((student, index) => (
-                  <tr key={student.index}>
-                    <td>
-                      <Image content={student.image} />
-                    </td>
-                    <td>{student.firstName}</td>
-                    <td>{student.lastName}</td>
-                    <td>
-                      {
-                        student.evaluations.map(e => {
-                          return e.color;
-                        })[student.evaluations.length - 1]
-                      }
-                    </td>
-                    <td>{this.getStudentEvaluation}</td>
-
-                    <td>
-                      {" "}
-                      <Button
-                        className="deleteButton"
-                        onClick={() => this.deleteStudent(student.id)}
-                      >
-                        Delete
-                      </Button>
-                    </td>
-                    <td>
-                      {" "}
-                      <Link
-                        className="link"
-                        to={`/students/${student.id}`}
-                        onClick={() => this.getStudent(student.id)}
-                      >
-                        DEATAILS
-                      </Link>
-                    </td>
+          {batch.id &&
+            batch.students && (
+              <table>
+                <thead>
+                  <tr>
+                    <th> </th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Last evaluation</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                </thead>
+                <tbody>
+                  {batch.students.map((student, index) => (
+                    <tr key={student.index}>
+                      <td>
+                        <Image content={student.image} />
+                      </td>
+                      <td>{student.firstName}</td>
+                      <td>{student.lastName}</td>
+                      <td>
+                        {
+                          student.evaluations.map(e => {
+                            return e.color;
+                          })[student.evaluations.length - 1]
+                        }
+                      </td>
+                      <td>{this.getStudentEvaluation}</td>
+
+                      <td>
+                        {" "}
+                        <Button
+                          className="deleteButton"
+                          onClick={() => this.deleteStudent(student.id)}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                      <td>
+                        {" "}
+                        <Link
+                          className="link"
+                          to={`/students/${student.id}`}
+                          onClick={() => this.getStudent(student.id)}
+                        >
+                          DEATAILS
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           <h1>{this.getGreen}</h1>
           <h1>Add new student</h1>
           <StudentForm onSubmit={this.addStudent} />

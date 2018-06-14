@@ -5,7 +5,6 @@ import Button from "@material-ui/core/Button";
 import { Link, Redirect } from "react-router-dom";
 import { updateStudent, getStudent } from "../actions/students";
 import { addEvaluation, updateEvaluation } from "../actions/evaluation";
-import { fetchBatch } from "../actions/batch";
 import StudentForm from "./StudentForm";
 import EvaluationForm from "./EvaluationForm";
 import Moment from "react-moment";
@@ -14,7 +13,7 @@ import Image from "../components/Image";
 class StudentPage extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { id: this.props.match.params.id };
   }
 
   toggleEdit = () => {
@@ -23,12 +22,16 @@ class StudentPage extends PureComponent {
     });
   };
 
-  componentDidUpdate(prevProps) {
-    const { id } = this.props.match.params;
+  // componentDidUpdate(prevProps) {
+  //   const { id } = this.props.match.params;
 
-    if (!this.props.student.id) {
-      this.props.getStudent(id);
-    }
+  //   if (!this.props.student.id) {
+  //     this.props.getStudent(id);
+  //   }
+  // }
+
+  componentWillMount() {
+    this.props.getStudent(this.props.match.params.id);
   }
 
   componentDidMount() {
@@ -141,5 +144,5 @@ const mapStateToProps = function(state, props) {
 
 export default connect(
   mapStateToProps,
-  { getStudent, updateStudent, addEvaluation, fetchBatch }
+  { getStudent, updateStudent, addEvaluation }
 )(StudentPage);
