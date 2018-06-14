@@ -49,4 +49,11 @@ export default class EvaluationController {
 
     return Evaluations.merge(evaluation, update).save();
   }
+
+  // //@Authorized()
+  // @Get("/evaluations/:studentId")
+  // async getEaluationByStudId(@Param("studentId") studentId: number) {
+  //   const evaluation = await Evaluations.findOne({ where: { studentId } });
+  //   return { evaluation };
+  // }
 }

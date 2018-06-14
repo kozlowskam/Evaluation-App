@@ -33,6 +33,6 @@ export default class Evaluations extends BaseEntity {
 
   @IsOptional()
   @IsString()
-  @Column("text", { default: "", nullable: true })
+  @Column("text", { default: "no comment", nullable: true })
   comment: string;
 }
