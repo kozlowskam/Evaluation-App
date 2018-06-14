@@ -4,7 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { Link, Redirect } from "react-router-dom";
 import { updateStudent, getStudent } from "../actions/students";
-import { addEvaluation, updateEvaluation } from "../actions/evaluation";
+import { addEvaluation, getEvaluation } from "../actions/evaluation";
 import StudentForm from "./StudentForm";
 import EvaluationForm from "./EvaluationForm";
 import Moment from "react-moment";
@@ -22,13 +22,13 @@ class StudentPage extends PureComponent {
     });
   };
 
-  // componentDidUpdate(prevProps) {
-  //   const { id } = this.props.match.params;
+  componentDidUpdate(prevProps) {
+    const { id } = this.props.match.params;
 
-  //   if (!this.props.student.id) {
-  //     this.props.getStudent(id);
-  //   }
-  // }
+    if (!this.props.student.id) {
+      this.props.getStudent(id);
+    }
+  }
 
   componentWillMount() {
     this.props.getStudent(this.props.match.params.id);
@@ -42,9 +42,9 @@ class StudentPage extends PureComponent {
     }
   }
 
-  // componentReload() {
-  //   this.props.getStudent(this.props.match.params.id);
-  // }
+  componentReload() {
+    this.props.getStudent(this.props.match.params.id);
+  }
 
   // handleChange = event => {
   //   this.setState({
@@ -65,6 +65,7 @@ class StudentPage extends PureComponent {
       student: student.id
     };
     this.props.addEvaluation(evaluation);
+    this.componentReload();
     console.log(student.id);
   };
 
@@ -72,8 +73,19 @@ class StudentPage extends PureComponent {
     this.props.history.go(-1);
   };
 
+  getEvaluation(evaluationId) {
+    this.props.getEvaluation(evaluationId);
+  }
+
   render() {
-    const { evaluations, student, batch, users, authenticated } = this.props;
+    const {
+      evaluations,
+      student,
+      batch,
+      users,
+      authenticated,
+      evaluation
+    } = this.props;
     if (!student) return null;
     if (!authenticated) return <Redirect to="/login" />;
     // if (
@@ -89,6 +101,7 @@ class StudentPage extends PureComponent {
         <Paper className="styles" elevation={4}>
           <Button onClick={this.oneBack}>BACK TO BATCH </Button>
           {this.state.edit && <StudentForm onSubmit={this.updateStudent} />}
+
           {!this.state.edit && (
             <div>
               <Button onClick={this.toggleEdit}>edit</Button>
@@ -99,6 +112,7 @@ class StudentPage extends PureComponent {
               </h1>
             </div>
           )}
+
           {student.id &&
             student.evaluations && (
               <table>
@@ -120,6 +134,16 @@ class StudentPage extends PureComponent {
                       </td>
                       <td> {evaluation.color}</td>
                       <td>{evaluation.comment}</td>
+                      <td>
+                        {" "}
+                        <Link
+                          className="link"
+                          to={`/evaluations/${evaluation.id}`}
+                          onClick={() => this.getEvaluation(evaluation.id)}
+                        >
+                          EDIT
+                        </Link>{" "}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -137,6 +161,7 @@ const mapStateToProps = function(state, props) {
   return {
     student: state.student,
     evaluations: state.evaluations,
+    evaluation: state.evaluation,
     authenticated: state.currentUser !== null,
     users: state.users === null ? null : state.users
   };
@@ -144,5 +169,5 @@ const mapStateToProps = function(state, props) {
 
 export default connect(
   mapStateToProps,
-  { getStudent, updateStudent, addEvaluation }
+  { getStudent, updateStudent, addEvaluation, getEvaluation }
 )(StudentPage);
