@@ -49,7 +49,7 @@ export default class StudentController {
     return student.save();
   }
 
-  @Authorized()
+  //@Authorized()
   @Delete("/students/:id")
   async deleteStudent(@Param("id") id: number) {
     const student = await Student.findOne(id);

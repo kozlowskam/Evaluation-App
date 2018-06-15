@@ -28,10 +28,20 @@ const TopBar = props => {
   const { location, history, user } = props;
 
   return (
-    <AppBar position="static" color="primary" align="center">
+    <AppBar
+      position="absolute"
+      color="primary"
+      align="center"
+      style={{ zIndex: 10 }}
+    >
       <Toolbar>
-        <Typography variant="title" color="inherit" style={{ flex: 1 }}>
-          Evaluation App
+        <Typography
+          variant="title"
+          color="inherit"
+          align="left"
+          style={{ flex: 1 }}
+        >
+          EVALUATION APP
         </Typography>
         <Button color="inherit" href="/batches">
           HOME

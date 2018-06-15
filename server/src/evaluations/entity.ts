@@ -23,7 +23,10 @@ export default class Evaluations extends BaseEntity {
   @UpdateDateColumn({ nullable: true })
   date: Date;
 
-  @ManyToOne(_ => Student, student => student.evaluations, { eager: false })
+  @ManyToOne(_ => Student, student => student.evaluations, {
+    eager: false,
+    cascade: true
+  })
   student: Student;
 
   @IsString()

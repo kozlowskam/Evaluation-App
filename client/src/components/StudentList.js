@@ -52,7 +52,7 @@ class StudentList extends PureComponent {
   }
 
   render() {
-    const { students, users, authenticated } = this.props;
+    const { students, users, authenticated, history } = this.props;
 
     if (
       !this.props.activeBatch.students ||

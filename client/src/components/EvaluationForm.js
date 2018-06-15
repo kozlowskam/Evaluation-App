@@ -7,6 +7,7 @@ import Icon from "@material-ui/core/Icon";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
+import { Redirect } from "react-router-dom";
 
 class EvaluationForm extends PureComponent {
   constructor(props) {
@@ -59,7 +60,7 @@ class EvaluationForm extends PureComponent {
             <br />
             <div>
               <TextField
-                label="Date"
+                label="Date (default today)"
                 name="date"
                 id="date"
                 value={this.state.date || initialValues.date || ""}
@@ -76,7 +77,7 @@ class EvaluationForm extends PureComponent {
               />
             </div>
             <br />
-            <Button type="submit">ADD EVALUATION</Button>
+            <Button type="submit">SUBMIT EVALUATION</Button>
           </form>
         </Paper>
       </div>

@@ -4,6 +4,27 @@
   text-align: center;
   justify-content: center;
 }
+body {
+  font-family: "Arial";
+  margin: 0;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  /* padding-top: 30px; */
+  /*padding-bottom: 30px;*/
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+h2 {
+  font-size: 17px;
+}
+.title {
+  text-align: left;
+}
 
 div form :last-child {
   justify-content: center;
@@ -11,13 +32,13 @@ div form :last-child {
 
 .styles {
   margin-top: 20px;
-  background-color: aquamarine;
   color: black;
   display: flex;
   flex-direction: column;
-  /* padding-top: 30px; */
-  padding-bottom: 30px;
+  padding-top: 75px;
+  padding-bottom: 50px;
   width: 75%;
+  height: 100%;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
@@ -29,6 +50,7 @@ div form :last-child {
 .link {
   color: rgb(35, 255, 6);
   text-decoration: none;
+  font-weight: bold;
 }
 
 .logIn {
@@ -37,4 +59,22 @@ div form :last-child {
 
 .signupButton {
   margin-bottom: 10px !important;
+}
+
+.AppBar {
+  background-color: rgb(48, 248, 8);
+}
+
+.outer-paper {
+  margin: auto;
+  margin-top: 50px;
+  padding: 20px;
+  width: 90%;
+  background-image: url("./page1t2.jpg");
+}
+
+.Button {
+  color: black;
+  font-weight: bold;
+  background-color: blue;
 }

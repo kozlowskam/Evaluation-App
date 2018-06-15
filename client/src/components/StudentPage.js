@@ -69,6 +69,7 @@ class StudentPage extends PureComponent {
 
     this.componentReload();
     console.log(student.id);
+    this.props.history.go(-1);
   };
 
   oneBack = event => {
@@ -86,7 +87,8 @@ class StudentPage extends PureComponent {
       batch,
       users,
       authenticated,
-      evaluation
+      evaluation,
+      history
     } = this.props;
     if (!student) return null;
     if (!authenticated) return <Redirect to="/login" />;
@@ -97,6 +99,13 @@ class StudentPage extends PureComponent {
     //   this.componentReload();
     //   return <div>...</div>;
     // }
+
+    // let LastDate;
+
+    // if (student.evaluations !== undefined) {
+    //   LastDate = student.evaluations[student.evaluations.length - 1].date;
+    // }
+    // console.log(LastDate);
 
     return (
       <div>

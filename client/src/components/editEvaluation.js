@@ -45,7 +45,7 @@ class EditEvaluation extends PureComponent {
     this.props.history.go(-1);
   };
   render() {
-    const { evaluation, student, users, authenticated } = this.props;
+    const { evaluation, student, users, authenticated, history } = this.props;
     if (!evaluation) return null;
     if (!authenticated) return <Redirect to="/login" />;
 
@@ -61,10 +61,12 @@ class EditEvaluation extends PureComponent {
             <div>
               <Button onClick={this.toggleEdit}>edit</Button>
 
-              <h1>
-                {evaluation.color} <br />
+              <h2>
+                Evaluation color <br />
+                {evaluation.color} <br /> <br />
+                Comment <br />
                 {evaluation.comment}
-              </h1>
+              </h2>
             </div>
           )}
         </Paper>
