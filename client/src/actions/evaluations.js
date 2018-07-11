@@ -3,9 +3,9 @@ import { baseUrl } from "../constants";
 import { logout } from "./users";
 import { isExpired } from "../jwt";
 
-export const FETCH_ALL_BATCHES = "FETCH_ALL_BATCHES";
+export const GET_STUDENTEVALUATION = "GET_STUDENTEVALUATION";
 
-export const fetchAllBatches = () => (dispatch, getState) => {
+export const getStudentEvaluation = studentId => (dispatch, getState) => {
   const state = getState();
   if (!state.currentUser) return null;
   const jwt = state.currentUser.jwt;
@@ -13,14 +13,12 @@ export const fetchAllBatches = () => (dispatch, getState) => {
   if (isExpired(jwt)) return dispatch(logout());
 
   request
-    .get(`${baseUrl}/batches`)
-    .set("Authorization", `Bearer ${jwt}`)
+    .get(`${baseUrl}/evaluations/${studentId}`)
     .then(response =>
       dispatch({
-        type: FETCH_ALL_BATCHES,
-        payload: response.body.batches
+        type: GET_STUDENTEVALUATION,
+        payload: response.body.evaluation
       })
     )
-
     .catch(err => alert(err));
 };

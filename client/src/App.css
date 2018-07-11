@@ -1,28 +1,80 @@
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
+  justify-content: center;
+}
+body {
+  font-family: "Arial";
+  margin: 0;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  /* padding-top: 30px; */
+  /*padding-bottom: 30px;*/
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+h2 {
+  font-size: 17px;
+}
+.title {
+  text-align: left;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+div form :last-child {
+  justify-content: center;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
+.styles {
+  margin-top: 20px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  padding-top: 75px;
+  padding-bottom: 50px;
+  width: 75%;
+  height: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  /* box-shadow: 0 3px 5px 2px rgba(93, 231, 81, 0.849) !important;
+    background-color: aqua !important */
+}
+
+.link {
+  color: rgb(35, 255, 6);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.logIn {
+  color: rgb(0, 0, 0);
+}
+
+.signupButton {
+  margin-bottom: 10px !important;
+}
+
+.AppBar {
+  background-color: rgb(48, 248, 8);
+}
+
+.outer-paper {
+  margin: auto;
+  margin-top: 50px;
   padding: 20px;
-  color: white;
+  width: 90%;
+  background-image: url("./page1t2.jpg");
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.Button {
+  color: black;
+  font-weight: bold;
+  background-color: blue;
 }

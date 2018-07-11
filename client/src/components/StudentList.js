@@ -3,39 +3,43 @@ import { connect } from "react-redux";
 import { fetchBatch } from "../actions/batch";
 import { fetchAllBatches } from "../actions/batches";
 import Paper from "@material-ui/core/Paper";
-import { Link } from "react-router-dom";
+import Image from "../components/Image";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
 import { addStudent, deleteStudent, getStudent } from "../actions/students";
+import { getEvaluation } from "../actions/evaluation";
 import StudentForm from "./StudentForm";
+import { Redirect } from "react-router-dom";
+import BatchEvaluation from "./BatchEvaluation";
+import Moment from "react-moment";
+import "../App.css";
 
 class StudentList extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
-  componentDidUpdate(prevProps) {
-    const { id } = this.props.match.params;
-
-    if (!this.props.batch !== prevProps.batch) {
-      this.props.fetchBatch(id);
-    }
-
-    console.log(this.props);
+    this.state = { id: this.props.match.params.id };
   }
 
-  componentDidMount() {
-    const { id } = this.props.match.params;
-
-    if (!this.props.batch.id) {
-      this.props.fetchBatch(id);
-    }
+  componentWillMount() {
+    this.props.fetchBatch(this.props.match.params.id);
   }
+
+  componentReload() {
+    this.props.fetchBatch(this.props.match.params.id);
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
 
   addStudent = student => {
-    const { batch } = this.props;
-    console.log(batch);
-    student = { ...student, batch: batch.id };
-    console.log(batch.id);
+    const { activeBatch } = this.props;
+    //console.log(batch);
+    student = { ...student, batch: activeBatch.id };
+    //console.log(batch.id);
     this.props.addStudent(student);
   };
 
@@ -48,72 +52,185 @@ class StudentList extends PureComponent {
   }
 
   render() {
-    const { batch, students } = this.props;
-    // console.log(batch);
+    const { students, users, authenticated, history } = this.props;
+
+    if (
+      !this.props.activeBatch.students ||
+      this.props.activeBatch.id !== parseInt(this.props.match.params.id)
+    ) {
+      this.componentReload();
+      return <div>...</div>;
+    }
+    //if (!authenticated) return <Redirect to="/login" />;
+
+    const batch = this.props.activeBatch;
+    const studentsGroup = batch.students;
+    console.log(studentsGroup);
+
+    const BatchEvaluations = studentsGroup.map(st => {
+      if (st.evaluations.length > 0)
+        return {
+          evaluation: st.evaluations.sort((a, b) => {
+            return a.id - b.id;
+          })[st.evaluations.length - 1],
+          student: st.id
+        };
+      return {
+        evaluation: "undefined",
+        st
+      };
+    });
+    console.log(BatchEvaluations);
+
+    const noEvaluation = BatchEvaluations.filter(
+      ev => (ev.evaluations = "undefined")
+    );
+
+    const GreenEvaluations = BatchEvaluations.filter(
+      ev => ev.evaluation.color === "green"
+    );
+    //console.log(GreenEvaluations);
+
+    const YellowEvaluations = BatchEvaluations.filter(
+      ev => ev.evaluation.color === "yellow"
+    );
+
+    const RedEvaluations = BatchEvaluations.filter(
+      ev => ev.evaluation.color === "red"
+    );
+
+    const GreenAmount = (
+      (GreenEvaluations.length / BatchEvaluations.length) *
+      100
+    ).toFixed(0);
+
+    const YellowAmount = (
+      (YellowEvaluations.length / BatchEvaluations.length) *
+      100
+    ).toFixed(0);
+
+    const RedAmount = (
+      (RedEvaluations.length / BatchEvaluations.length) *
+      100
+    ).toFixed(0);
+
+    const ColorArray = Array(20)
+      .fill("green")
+      .concat(Array(45).fill("red"), Array(35).fill("yellow"));
+    //console.log(ColorArray);
+
+    let randomColor = ColorArray[Math.floor(Math.random() * ColorArray.length)];
+
+    let randomStudentId;
+
+    if (randomColor === "red" && RedEvaluations.length > 0) {
+      randomStudentId =
+        RedEvaluations[Math.floor(Math.random() * RedEvaluations.length)]
+          .student;
+    }
+    if (randomColor === "green" && GreenEvaluations.length > 0) {
+      randomStudentId =
+        GreenEvaluations[Math.floor(Math.random() * GreenEvaluations.length)]
+          .student;
+    }
+    if (randomColor === "red" && YellowEvaluations.length > 0) {
+      randomStudentId =
+        YellowEvaluations[Math.floor(Math.random() * YellowEvaluations.length)]
+          .student;
+    } else {
+      randomStudentId =
+        studentsGroup[Math.floor(Math.random() * studentsGroup.length)].id;
+    }
+
+    console.log(randomStudentId);
 
     return (
       <div>
-        <Button type="submit" href="/batches">
-          HOME
-        </Button>
-        {!batch.id && <div>Loading...</div>}
-        {batch.id && (
-          <table>
-            <thead>
-              <tr>
-                <th>First name</th>
-                <th>Last name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {batch.students.map((student, index) => (
-                <tr key={student.index}>
-                  <td>{student.firstName}</td>
-                  <td>{student.lastName}</td>
-                  <td>
-                    {" "}
-                    <Button
-                      className="deleteButton"
-                      onClick={() => this.deleteStudent(student.id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                  <td>
-                    {" "}
-                    <Link
-                      className="link"
-                      to={`/students/${student.id}`}
-                      onClick={() => this.getStudent(batch.id)}
-                    >
-                      DEATAILS
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <Paper className="styles" elevation={4}>
+          {!batch.students && <div>Loading...</div>}
 
-        <h1>Add new student</h1>
-        <StudentForm onSubmit={this.addStudent} />
+          <br />
+
+          {batch.id &&
+            batch.students && (
+              <table>
+                <thead>
+                  <tr>
+                    <th> </th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Last evaluation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {batch.students.map((student, index) => (
+                    <tr key={student.index}>
+                      <td>
+                        <Image content={student.image} />
+                      </td>
+                      <td>{student.firstName}</td>
+                      <td>{student.lastName}</td>
+                      <td>
+                        {
+                          student.evaluations.map(e => {
+                            return e.color;
+                          })[student.evaluations.length - 1]
+                        }
+                      </td>
+                      <td>{this.getStudentEvaluation}</td>
+
+                      <td>
+                        {" "}
+                        <Button
+                          className="deleteButton"
+                          onClick={() => this.deleteStudent(student.id)}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                      <td>
+                        {" "}
+                        <Link
+                          className="link"
+                          to={`/students/${student.id}`}
+                          onClick={() => this.getStudent(student.id)}
+                        >
+                          DEATAILS
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          <h1>{this.getGreen}</h1>
+          <h1>Add new student</h1>
+          <StudentForm onSubmit={this.addStudent} />
+
+          <p> Green Evaluation {GreenAmount} %</p>
+          <p> Yellow Evaluation {YellowAmount} %</p>
+          <p> Red Evaluation {RedAmount} %</p>
+          <Link
+            className="link"
+            to={`/students/${randomStudentId}`}
+            onClick={() => this.getStudent(randomStudentId)}
+          >
+            ASK Question
+          </Link>
+        </Paper>
       </div>
     );
   }
 }
 
-const mapStateToProps = function(state) {
-  return {
-    batch: state.batch,
-    students: state.students
-  };
+const mapStateToProps = ({ activeBatch }) => {
+  return { activeBatch };
 };
 
 export default connect(
   mapStateToProps,
   {
     fetchBatch,
-    fetchAllBatches,
     addStudent,
     deleteStudent,
     getStudent

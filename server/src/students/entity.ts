@@ -9,9 +9,10 @@ import {
 import { MinLength, IsString } from "class-validator";
 import Batch from "../batches/entity";
 import Evaluations from "../evaluations/entity";
+import { Url } from "url";
 
 @Entity()
-export default class Students extends BaseEntity {
+export default class Student extends BaseEntity {
   @PrimaryGeneratedColumn() id?: number;
 
   @IsString()
@@ -25,13 +26,16 @@ export default class Students extends BaseEntity {
   lastName: string;
 
   @Column("text", { nullable: true })
-  image: string;
+  image: Url;
 
-  @ManyToOne(_ => Batch, batch => batch.students, { eager: false })
+  @ManyToOne(_ => Batch, batch => batch.students, {
+    eager: false
+  })
   batch: Batch;
 
-  @OneToMany(_ => Evaluations, evaluation => evaluation.students, {
+  @OneToMany(_ => Evaluations, evaluation => evaluation.student, {
     eager: true
+    //cascade: true
   })
   evaluations: Evaluations[];
 }
